@@ -13,7 +13,7 @@ function formatFormData(fd) {
       e.preventDefault();
       const data = new FormData(e.target);
       const body = formatFormData(data);
-      postData('http://localhost:8080/flashcard/add', body)
+      postData('http://localhost:8080/flashcards/add', body)
       .then(response => console.log(response));
     }
     

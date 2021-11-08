@@ -6,7 +6,7 @@ const es6Renderer = require('express-es6-template-engine');
 const app = express();
 
 // app.use('/', express.static(__dirname + '/public'));
-// app.use('/contacts', express.static(__dirname + '/public'));
+app.use('/flashcards', express.static(__dirname + '/public'));
 app.use(express.json());
 
 // setup the template engine
@@ -18,7 +18,7 @@ app.get('/heartbeat', (req, res) => {
   res.render('hello world');
 })
 
-// const {contacts} = require('./routes');
+const {flashcards} = require('./routes');
 // server.get('/', (req, res) => {
 //     res.render('landing', {
 //       partials: {
@@ -29,7 +29,7 @@ app.get('/heartbeat', (req, res) => {
 //     });
 // });
 
-// server.use('/contacts', contacts);
+app.use('/flashcards', flashcards);
 
 app.get('/', (req, res) => {
   res.render('landing');

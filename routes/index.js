@@ -1,3 +1,3 @@
-const flashcard = require('./card');
+const flashcards = require('./flashcards');
 
-module.exports = { flashcard };
+module.exports = { flashcards };

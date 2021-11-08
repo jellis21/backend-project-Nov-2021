@@ -1,23 +1,24 @@
 const router = require('express').Router();
 const Sequelize = require('sequelize');
-const { User } = require('../models');
+const { Flashcard } = require('../models');
 
 router.post('/add', async (req, res) => {
   const { category, question, answer } = req.body;
 
-  const newUser = await Flashcard.create({
+  const newFlashcard = await Flashcard.create({
     category,
     question,
     answer
   });
   
     res.json({
-      id: newFlashcard.id
+      id: newFlashcard.id,
+      message: "hello"
     });
   });
 
   router.get('/add', (req, res) => {
-    res.render('flashcard-form', {
+    res.render('flashcardForm', {
       partials: {
         footer: 'partials/footer',
         head: 'partials/head',
