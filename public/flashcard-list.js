@@ -1,6 +1,6 @@
 const select = document.getElementById('select');
 const category = document.getElementsByTagName('h4');
-const main = document.getElementById('main');
+const mainDiv = document.getElementById('accordion');
 const nav = document.getElementById('nav');
 
 for (const item of category) {
@@ -18,7 +18,18 @@ select.addEventListener('change', (e) => {
   fetch(`http://localhost:8080/show/:${select.value}`)
   .then((res) => res.text())
   .then((data) => {
-    main.innerHTML = data
+    mainDiv.innerHTML = data
   })
 })
 
+
+mainDiv.addEventListener('click', handleClick)
+
+
+function handleClick(e) {
+  // console.log(e.target.id)
+const id = e.target.id;
+fetch(`http://localhost:8080/edit/${id}`)
+.then(json => json.json())
+.then(response => console.log(response))
+} 

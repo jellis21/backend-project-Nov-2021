@@ -32,7 +32,6 @@ app.get('/show/all', async (req, res) => {
   const html = flashcards
   .map((flashcard) => {
     return `
-    <div class="accordion mx-auto" id="accordion" style="width: 75%">
     <div class="card mb-5">
       <div class="card-header" id="heading${flashcard.id}">
         <h4>${flashcard.category}</h4>
@@ -48,6 +47,13 @@ app.get('/show/all', async (req, res) => {
           > 
             Answer
           </button>
+          <button
+            class="btn btn-dark"
+            type="button"
+            id="${flashcard.id}"
+          > 
+            Update
+          </button>
         </h2>
       </div>
       <div
@@ -61,7 +67,6 @@ app.get('/show/all', async (req, res) => {
         </div>
       </div>
     </div>  
-  </div>
     `
   })
   .join('')
@@ -85,7 +90,7 @@ app.get('/show/:category', async (req, res) => {
   .map((flashcard) => {
     return `
     <div class="accordion mx-auto" id="accordion" style="width: 75%">
-    <div class="card mb-5">
+    <div class="card mb-5" id="${flashcard.id}">
       <div class="card-header" id="heading${flashcard.id}">
         <h4>${flashcard.category}</h4>
         <p>${flashcard.question}</p>
@@ -99,6 +104,13 @@ app.get('/show/:category', async (req, res) => {
             aria-controls="collapse${flashcard.id}"
           > 
             Answer
+          </button>
+          <button
+            class="btn btn-dark"
+            type="button"
+            id="${flashcard.id}"
+          > 
+            Update
           </button>
         </h2>
       </div>
@@ -127,8 +139,13 @@ app.get('/show/:category', async (req, res) => {
 })
 
 // update flashcards
-
-
+app.get('/edit/:id', (req, res) => {
+  const { id } = req.params;
+console.log(id)
+  res.json({
+    message: `You clicked on ${id}`
+  })
+})
 
 app.listen('8080', () => {
   console.log('server is up and running!')
