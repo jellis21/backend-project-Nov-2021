@@ -7,6 +7,7 @@ const { Flashcard } = require('./models');
 const app = express();
 
 app.use('/', express.static(__dirname + '/public'));
+app.use('/show', express.static(__dirname + '/public'));
 app.use(express.json());
 
 // setup the template engine
@@ -124,6 +125,9 @@ app.get('/show/:category', async (req, res) => {
   });
 
 })
+
+// update flashcards
+
 
 
 app.listen('8080', () => {
