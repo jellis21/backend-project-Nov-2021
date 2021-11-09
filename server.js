@@ -34,9 +34,9 @@ app.get('/show/all', async (req, res) => {
     return `
     <div class="card mb-5">
       <div class="card-header" id="heading${flashcard.id}">
-        <h4>${flashcard.category}</h4>
-        <p>${flashcard.question}</p>
-        <h2 class="mb-0">
+        <h4 class="cat">${flashcard.category}</h4>
+        <p class="ques">${flashcard.question}</p>
+        
           <button
             class="btn btn-dark"
             type="button"
@@ -54,7 +54,7 @@ app.get('/show/all', async (req, res) => {
           > 
             Update
           </button>
-        </h2>
+        
       </div>
       <div
         id="collapse${flashcard.id}" 
@@ -63,7 +63,7 @@ app.get('/show/all', async (req, res) => {
         data-parent="#accordion"
       >
         <div class="card-body">
-          ${flashcard.answer}
+        <p class="ans">${flashcard.answer}</p>
         </div>
       </div>
     </div>  
@@ -89,12 +89,11 @@ app.get('/show/:category', async (req, res) => {
   const html = flashcards
   .map((flashcard) => {
     return `
-    <div class="accordion mx-auto" id="accordion" style="width: 75%">
-    <div class="card mb-5" id="${flashcard.id}">
+    <div class="card mb-5">
       <div class="card-header" id="heading${flashcard.id}">
-        <h4>${flashcard.category}</h4>
-        <p>${flashcard.question}</p>
-        <h2 class="mb-0">
+        <p class="cat">${flashcard.category}</p>
+        <p class="ques">${flashcard.question}</p>
+        
           <button
             class="btn btn-dark"
             type="button"
@@ -112,7 +111,7 @@ app.get('/show/:category', async (req, res) => {
           > 
             Update
           </button>
-        </h2>
+        
       </div>
       <div
         id="collapse${flashcard.id}" 
@@ -121,11 +120,10 @@ app.get('/show/:category', async (req, res) => {
         data-parent="#accordion"
       >
         <div class="card-body">
-          ${flashcard.answer}
+        <p class="ans">${flashcard.answer}</p>
         </div>
       </div>
     </div>  
-  </div>
     `
   })
   .join('')
@@ -139,11 +137,17 @@ app.get('/show/:category', async (req, res) => {
 })
 
 // update flashcards
-app.get('/edit/:id', (req, res) => {
-  const { id } = req.params;
-console.log(id)
+app.post('/edit', async (req, res) => {
+  const { answer, category, id, question } = req.body;
+  
+  const updateFlashcard = await Flashcard.update(req.body, {
+    where: {
+      id
+    }
+  });
+
   res.json({
-    message: `You clicked on ${id}`
+    message: `You updated id: ${id}, category: ${category}, question: ${question}, and answer: ${answer}`
   })
 })
 
