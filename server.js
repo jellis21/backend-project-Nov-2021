@@ -1,11 +1,12 @@
 const express = require('express');
 const es6Renderer = require('express-es6-template-engine');
-// const Sequelize = require('sequelize');
-// const { Flashcard } = require('./models');
+const Sequelize = require('sequelize');
+const { Flashcard } = require('./models');
 
 const app = express();
 
-// app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/public'));
+app.use('/show', express.static(__dirname + '/public'));
 app.use('/flashcards', express.static(__dirname + '/public'));
 app.use(express.json());
 
@@ -15,7 +16,9 @@ app.set('views', 'views');
 app.set('view engine', 'html');
 
 app.get('/heartbeat', (req, res) => {
-  res.render('hello world');
+  res.json({
+    "is": "working"
+  })
 })
 
 const {flashcards} = require('./routes');
@@ -33,6 +36,132 @@ app.use('/flashcards', flashcards);
 
 app.get('/', (req, res) => {
   res.render('landing');
+});
+
+// display all flashcards
+app.get('/show/all', async (req, res) => {
+  const flashcards = await Flashcard.findAll();
+
+  const html = flashcards
+  .map((flashcard) => {
+    return `
+    <div class="card mb-5">
+      <div class="card-header" id="heading${flashcard.id}">
+        <h4 class="cat">${flashcard.category}</h4>
+        <p class="ques">${flashcard.question}</p>
+        
+          <button
+            class="btn btn-dark"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapse${flashcard.id}"
+            aria-expanded="true"
+            aria-controls="collapse${flashcard.id}"
+          > 
+            Answer
+          </button>
+          <button
+            class="btn btn-dark"
+            type="button"
+            id="${flashcard.id}"
+          > 
+            Update
+          </button>
+        
+      </div>
+      <div
+        id="collapse${flashcard.id}" 
+        class="collapse"
+        aria-labelledby="heading${flashcard.id}"
+        data-parent="#accordion"
+      >
+        <div class="card-body">
+        <p class="ans">${flashcard.answer}</p>
+        </div>
+      </div>
+    </div>  
+    `
+  })
+  .join('')
+  
+  res.render('flashcard-list', {
+    locals: {
+      flashcards: html
+    }
+  });
+});
+
+// filter flashcards by category
+app.get('/show/:category', async (req, res) => {
+  const flashcards = await Flashcard.findAll({
+    where: {
+      category: req.params.category
+    }
+  });
+
+  const html = flashcards
+  .map((flashcard) => {
+    return `
+    <div class="card mb-5">
+      <div class="card-header" id="heading${flashcard.id}">
+        <p class="cat">${flashcard.category}</p>
+        <p class="ques">${flashcard.question}</p>
+        
+          <button
+            class="btn btn-dark"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapse${flashcard.id}"
+            aria-expanded="true"
+            aria-controls="collapse${flashcard.id}"
+          > 
+            Answer
+          </button>
+          <button
+            class="btn btn-dark"
+            type="button"
+            id="${flashcard.id}"
+          > 
+            Update
+          </button>
+        
+      </div>
+      <div
+        id="collapse${flashcard.id}" 
+        class="collapse"
+        aria-labelledby="heading${flashcard.id}"
+        data-parent="#accordion"
+      >
+        <div class="card-body">
+        <p class="ans">${flashcard.answer}</p>
+        </div>
+      </div>
+    </div>  
+    `
+  })
+  .join('')
+  
+  res.render('flashcard-list', {
+    locals: {
+      flashcards: html
+    }
+  });
+
+})
+
+// update flashcards
+app.post('/edit', async (req, res) => {
+  const { answer, category, id, question } = req.body;
+  
+  const updateFlashcard = await Flashcard.update(req.body, {
+    where: {
+      id
+    }
+  });
+
+  res.json({
+    message: `You updated id: ${id}, category: ${category}, question: ${question}, and answer: ${answer}`
+  })
 })
 
 app.listen('8080', () => {
