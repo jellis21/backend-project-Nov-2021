@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require('express');
 const es6Renderer = require('express-es6-template-engine');
 const Sequelize = require('sequelize');
@@ -8,6 +7,7 @@ const app = express();
 
 app.use('/', express.static(__dirname + '/public'));
 app.use('/show', express.static(__dirname + '/public'));
+app.use('/flashcards', express.static(__dirname + '/public'));
 app.use(express.json());
 
 // setup the template engine
@@ -20,6 +20,19 @@ app.get('/heartbeat', (req, res) => {
     "is": "working"
   })
 })
+
+const {flashcards} = require('./routes');
+// server.get('/', (req, res) => {
+//     res.render('landing', {
+//       partials: {
+//         footer: 'partials/footer',
+//         head: 'partials/head',
+//         header: 'partials/header'
+//       }
+//     });
+// });
+
+app.use('/flashcards', flashcards);
 
 app.get('/', (req, res) => {
   res.render('landing');
