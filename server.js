@@ -22,15 +22,15 @@ app.get('/heartbeat', (req, res) => {
 })
 
 const {flashcards} = require('./routes');
-// server.get('/', (req, res) => {
-//     res.render('landing', {
-//       partials: {
-//         footer: 'partials/footer',
-//         head: 'partials/head',
-//         header: 'partials/header'
-//       }
-//     });
-// });
+app.get('/', (req, res) => {
+    res.render('landing', {
+      partials: {
+        footer: 'partials/footer',
+        head: 'partials/head',
+        header: 'partials/header'
+      }
+    });
+});
 
 app.use('/flashcards', flashcards);
 
@@ -87,6 +87,11 @@ app.get('/show/all', async (req, res) => {
   res.render('flashcard-list', {
     locals: {
       flashcards: html
+    },
+    partials: {
+      footer: 'partials/footer',
+      head: 'partials/head',
+      header: 'partials/header'
     }
   });
 });
