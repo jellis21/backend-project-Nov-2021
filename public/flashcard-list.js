@@ -12,15 +12,17 @@ for (const item of category) {
   }
 }
 
-// need to complete. Not filtering flashcards properly
+// Sort flashcards by category
+let cards = document.querySelectorAll('.card');
 select.addEventListener('change', (e) => {
-  e.preventDefault();
-  console.log(select.value)
-  fetch(`http://localhost:8080/show/${select.value}`)
-    .then((res) => res.json())
-    .then((data) => {
-      mainDiv.innerHTML = data
-    })
+  mainDiv.innerHTML = '';
+  for (const item of cards) {
+    if (select.value === 'All') {
+      mainDiv.appendChild(item);
+    } else if (item.innerHTML.includes(`${select.value}`)) {
+      mainDiv.appendChild(item);
+      }
+  } 
 })
 
 // update flashcards in browser

@@ -91,63 +91,6 @@ app.get('/show/all', async (req, res) => {
   });
 });
 
-// filter flashcards by category
-app.get('/show/:category', async (req, res) => {
-  const flashcards = await Flashcard.findAll({
-    where: {
-      category: req.params.category
-    }
-  });
-
-  const html = flashcards
-  .map((flashcard) => {
-    return `
-    <div class="card mb-5">
-      <div class="card-header" id="heading${flashcard.id}">
-        <p class="cat">${flashcard.category}</p>
-        <p class="ques">${flashcard.question}</p>
-        
-          <button
-            class="btn btn-dark"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapse${flashcard.id}"
-            aria-expanded="true"
-            aria-controls="collapse${flashcard.id}"
-          > 
-            Answer
-          </button>
-          <button
-            class="btn btn-dark"
-            type="button"
-            id="${flashcard.id}"
-          > 
-            Update
-          </button>
-        
-      </div>
-      <div
-        id="collapse${flashcard.id}" 
-        class="collapse"
-        aria-labelledby="heading${flashcard.id}"
-        data-parent="#accordion"
-      >
-        <div class="card-body">
-        <p class="ans">${flashcard.answer}</p>
-        </div>
-      </div>
-    </div>  
-    `
-  })
-  .join('')
-  
-  res.render('flashcard-list', {
-    locals: {
-      flashcards: html
-    }
-  });
-
-})
 
 // update flashcards
 app.post('/edit', async (req, res) => {
