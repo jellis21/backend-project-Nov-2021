@@ -43,7 +43,24 @@ function handleClick(e) {
   const target = e.target;
   const id = e.target.id;
   
-  if (target.tagName === 'BUTTON' && target.innerText === "Update") {
+  if (target.tagName === 'BUTTON' && target.innerText === "Edit") {
+    target.innerText = "Update";
+    target.className = "btn btn-primary";
+    const targetCard = target.parentElement.parentElement;
+    targetCard.querySelector('.cat').innerHTML =
+    `<input id="cat" value="${targetCard.querySelector('.cat').innerText}"/>`;
+    targetCard.querySelector('.ques').innerHTML =
+    `<input id="ques" value="${targetCard.querySelector('.ques').innerText}"/>`;
+    targetCard.querySelector('.ans').innerHTML =
+    `<input id="ans" value="${targetCard.querySelector('.ans').innerText}"/>`;
+  } else if (target.tagName === 'BUTTON' && target.innerText === "Update") {
+    const targetCard = target.parentElement.parentElement;
+    target.innerText = "Success";
+    target.className = "btn btn-success";
+    setTimeout(() => {
+      target.innerText = "Edit";
+      target.className = "btn btn-dark";
+    }, 2000)
     const body = {
       id,
       category: document.getElementById('cat').value,
@@ -52,18 +69,9 @@ function handleClick(e) {
     }
     handleFetchRequest(`http://localhost:8080/edit`, body, 'POST')
     .then(response => console.log(response.message))
-  } else if (target.className === 'cat') {
-    target.innerHTML = `
-      <input id="cat" value="${target.innerText}"/>
-    `;
-  } else if (target.className === 'ques') {
-    target.innerHTML = `
-      <input id="ques" value="${target.innerText}"/>
-    `;
-  } else if (target.className === 'ans') {
-    target.innerHTML = `
-      <input id="ans" value="${target.innerText}"/>
-    `;
+
+    targetCard.querySelector('.cat').innerHTML = `${targetCard.querySelector('#cat').value}`;
+    targetCard.querySelector('.ques').innerHTML = `${targetCard.querySelector('#ques').value}`;
+    targetCard.querySelector('.ans').innerHTML = `${targetCard.querySelector('#ans').value}`;
   }
-    
 } 

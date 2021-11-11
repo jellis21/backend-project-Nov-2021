@@ -65,7 +65,7 @@ app.get('/show/all', async (req, res) => {
             type="button"
             id="${flashcard.id}"
           > 
-            Update
+            Edit
           </button>
         
       </div>
