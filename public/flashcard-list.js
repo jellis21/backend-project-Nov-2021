@@ -42,11 +42,21 @@ mainDiv.addEventListener('click', handleClick);
 function handleClick(e) {
   const target = e.target;
   const id = e.target.id;
-  
+  // Clicking "edit" allows you to update
+  // Clicking "update" pushes changes to db
+  // Clicking "delete" updates db and removes flashcard
   if (target.tagName === 'BUTTON' && target.innerText === "Edit") {
     target.innerText = "Update";
     target.className = "btn btn-primary";
     const targetCard = target.parentElement.parentElement;
+    target.parentElement.innerHTML += `
+    <button
+    class="btn btn-danger"
+    type="button"
+    data-id="${id}"
+    > 
+    Delete
+  </button>`;
     targetCard.querySelector('.cat').innerHTML =
     `<input id="cat" value="${targetCard.querySelector('.cat').innerText}"/>`;
     targetCard.querySelector('.ques').innerHTML =
@@ -73,5 +83,13 @@ function handleClick(e) {
     targetCard.querySelector('.cat').innerHTML = `${targetCard.querySelector('#cat').value}`;
     targetCard.querySelector('.ques').innerHTML = `${targetCard.querySelector('#ques').value}`;
     targetCard.querySelector('.ans').innerHTML = `${targetCard.querySelector('#ans').value}`;
+  } else if (target.tagName === 'BUTTON' && target.innerText === "Delete") {
+    const dataId = target.getAttribute('data-id');
+    fetch(`http://localhost:8080/delete/${dataId}`, {
+      method: 'DELETE'
+    })
+    .then(response => console.log(response))
+    const targetCard = target.parentElement.parentElement;
+    targetCard.remove();
   }
 } 

@@ -107,6 +107,19 @@ app.post('/edit', async (req, res) => {
   })
 })
 
+// delete flashcards
+app.delete('/delete/:id', async (req, res) => {
+  const { id } = req.params;
+  const deletedFlashcard = await Flashcard.destroy({
+      where: {
+          id
+      }
+  });
+  res.json({
+    message: `You deleted id: ${id}`
+  });
+});
+
 app.listen('8080', () => {
   console.log('server is up and running!')
 })
