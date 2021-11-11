@@ -51,7 +51,7 @@ function handleClick(e) {
     const targetCard = target.parentElement.parentElement;
     target.parentElement.innerHTML += `
     <button
-    class="btn btn-danger"
+    class="btn btn-danger delete"
     type="button"
     data-id="${id}"
     > 
@@ -70,14 +70,16 @@ function handleClick(e) {
     setTimeout(() => {
       target.innerText = "Edit";
       target.className = "btn btn-dark";
-    }, 2000)
+    }, 2000);
+    const deleteButton = target.parentElement.querySelector('.delete');
+    deleteButton.remove()
     const body = {
       id,
       category: document.getElementById('cat').value,
       question: document.getElementById('ques').value,
       answer: document.getElementById('ans').value
     }
-    handleFetchRequest(`http://localhost:8080/edit`, body, 'POST')
+    handleFetchRequest(`http://localhost:8080/flashcards/edit`, body, 'POST')
     .then(response => console.log(response.message))
 
     targetCard.querySelector('.cat').innerHTML = `${targetCard.querySelector('#cat').value}`;
@@ -85,7 +87,7 @@ function handleClick(e) {
     targetCard.querySelector('.ans').innerHTML = `${targetCard.querySelector('#ans').value}`;
   } else if (target.tagName === 'BUTTON' && target.innerText === "Delete") {
     const dataId = target.getAttribute('data-id');
-    fetch(`http://localhost:8080/delete/${dataId}`, {
+    fetch(`http://localhost:8080/flashcards/delete/${dataId}`, {
       method: 'DELETE'
     })
     .then(response => console.log(response))
