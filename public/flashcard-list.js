@@ -12,15 +12,17 @@ for (const item of category) {
   }
 }
 
-// need to complete. Not filtering flashcards properly
+// Sort flashcards by category
+let cards = document.querySelectorAll('.card');
 select.addEventListener('change', (e) => {
-  e.preventDefault();
-  console.log(select.value)
-  fetch(`http://localhost:8080/show/${select.value}`)
-    .then((res) => res.json())
-    .then((data) => {
-      mainDiv.innerHTML = data
-    })
+  mainDiv.innerHTML = '';
+  for (const item of cards) {
+    if (select.value === 'All') {
+      mainDiv.appendChild(item);
+    } else if (item.innerHTML.includes(`${select.value}`)) {
+      mainDiv.appendChild(item);
+      }
+  } 
 })
 
 // update flashcards in browser
@@ -40,28 +42,56 @@ mainDiv.addEventListener('click', handleClick);
 function handleClick(e) {
   const target = e.target;
   const id = e.target.id;
-  
-  if (target.tagName === 'BUTTON' && target.innerText === "Update") {
+  // Clicking "edit" allows you to update
+  // Clicking "update" pushes changes to db
+  // Clicking "delete" updates db and removes flashcard
+  if (target.tagName === 'BUTTON' && target.innerText === "Edit") {
+    target.innerText = "Update";
+    target.className = "btn btn-dark";
+    const targetCard = target.parentElement.parentElement;
+    target.parentElement.innerHTML += `
+    <button
+    class="btn btn-danger delete"
+    type="button"
+    data-id="${id}"
+    > 
+    Delete
+  </button>`;
+    targetCard.querySelector('.cat').innerHTML =
+    `<input id="cat" class="bg-secondary" value="${targetCard.querySelector('.cat').innerText}"/>`;
+    targetCard.querySelector('.ques').innerHTML =
+    `<input id="ques" class="bg-secondary" value="${targetCard.querySelector('.ques').innerText}"/>`;
+    targetCard.querySelector('.ans').innerHTML =
+    `<input id="ans" class="bg-secondary" value="${targetCard.querySelector('.ans').innerText}"/>`;
+  } else if (target.tagName === 'BUTTON' && target.innerText === "Update") {
+    const targetCard = target.parentElement.parentElement;
+    target.innerText = "Success";
+    target.className = "btn btn-success";
+    setTimeout(() => {
+      target.innerText = "Edit";
+      target.className = "btn btn-dark";
+    }, 2000);
+    const deleteButton = target.parentElement.querySelector('.delete');
+    deleteButton.remove()
     const body = {
       id,
       category: document.getElementById('cat').value,
       question: document.getElementById('ques').value,
       answer: document.getElementById('ans').value
     }
-    handleFetchRequest(`http://localhost:8080/edit`, body, 'POST')
+    handleFetchRequest(`http://localhost:8080/flashcards/edit`, body, 'POST')
     .then(response => console.log(response.message))
-  } else if (target.className === 'cat') {
-    target.innerHTML = `
-      <input id="cat" value="${target.innerText}"/>
-    `;
-  } else if (target.className === 'ques') {
-    target.innerHTML = `
-      <input id="ques" value="${target.innerText}"/>
-    `;
-  } else if (target.className === 'ans') {
-    target.innerHTML = `
-      <input id="ans" value="${target.innerText}"/>
-    `;
+
+    targetCard.querySelector('.cat').innerHTML = `${targetCard.querySelector('#cat').value}`;
+    targetCard.querySelector('.ques').innerHTML = `${targetCard.querySelector('#ques').value}`;
+    targetCard.querySelector('.ans').innerHTML = `${targetCard.querySelector('#ans').value}`;
+  } else if (target.tagName === 'BUTTON' && target.innerText === "Delete") {
+    const dataId = target.getAttribute('data-id');
+    fetch(`http://localhost:8080/flashcards/delete/${dataId}`, {
+      method: 'DELETE'
+    })
+    .then(response => console.log(response))
+    const targetCard = target.parentElement.parentElement;
+    targetCard.remove();
   }
-    
 } 

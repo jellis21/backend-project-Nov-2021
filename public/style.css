@@ -1,9 +1,114 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+/* sticky footer */
+main {
+  flex: 1;
+}
 body {
-    /* display: flex; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #121212;
+}
+
+/* landing.html */
+.bootstrap-icon {
+  color: #bb86fc;
+  width: 16rem;
+  height: 16rem;
+  /* max-width: 50%; */
+}
+.landing-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#landing-button {
+  color: #ffffff;
+}
+
+/* flashcardForm.html */
+#form {
+  width: 50%;
+}
+#category::placeholder,
+#question::placeholder,
+#answer::placeholder {
+  color: #ffffff;
+  opacity: 75%;
+}
+
+/* flashcardlist.html */
+.card {
+  background-color: #bb86fc;
+}
+.accordion {
+  width: 75%;
+}
+#cat,
+#ques,
+#ans {
+  color: #ffffff;
+  opacity: 75%;
+}
+
+/* all */
+h1 {
+  color: #bb86fc;
+}
+.y-wrap {
+  margin: 0 1rem;
+}
+label {
+  color: #bb86fc;
+}
+
+/* footer styling */
+footer {
+  color: white;
+  opacity: 60%;
+}
+.footer-div {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+.footer-p {
+  margin: 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .accordion {
+    width: 550px;
+  }
+  body {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: yellow;
-}
-#form {
-    width: 50%;
+    height: 100%;
+    min-height: 100vh;
+    background-color: #121212;
+  }
+  .y-wrap {
+    max-width: 768px;
+  }
+  nav {
+    width: 100%;
+  }
+  footer {
+    width: 100%;
+  }
+  #form {
+    width: 100%;
+  }
+  .bootstrap-icon {
+    width: 25rem;
+    height: 25rem;
+  }
 }
