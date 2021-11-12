@@ -76,6 +76,11 @@ router.get('/show', async (req, res) => {
   res.render('flashcard-list', {
     locals: {
       flashcards: html
+    },
+    partials: {
+      footer: 'partials/footer',
+      head: 'partials/head',
+      header: 'partials/header'
     }
   });
 });

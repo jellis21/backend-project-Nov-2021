@@ -47,7 +47,7 @@ function handleClick(e) {
   // Clicking "delete" updates db and removes flashcard
   if (target.tagName === 'BUTTON' && target.innerText === "Edit") {
     target.innerText = "Update";
-    target.className = "btn btn-primary";
+    target.className = "btn btn-dark";
     const targetCard = target.parentElement.parentElement;
     target.parentElement.innerHTML += `
     <button
@@ -58,11 +58,11 @@ function handleClick(e) {
     Delete
   </button>`;
     targetCard.querySelector('.cat').innerHTML =
-    `<input id="cat" value="${targetCard.querySelector('.cat').innerText}"/>`;
+    `<input id="cat" class="bg-secondary" value="${targetCard.querySelector('.cat').innerText}"/>`;
     targetCard.querySelector('.ques').innerHTML =
-    `<input id="ques" value="${targetCard.querySelector('.ques').innerText}"/>`;
+    `<input id="ques" class="bg-secondary" value="${targetCard.querySelector('.ques').innerText}"/>`;
     targetCard.querySelector('.ans').innerHTML =
-    `<input id="ans" value="${targetCard.querySelector('.ans').innerText}"/>`;
+    `<input id="ans" class="bg-secondary" value="${targetCard.querySelector('.ans').innerText}"/>`;
   } else if (target.tagName === 'BUTTON' && target.innerText === "Update") {
     const targetCard = target.parentElement.parentElement;
     target.innerText = "Success";
