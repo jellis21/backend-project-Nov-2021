@@ -13,7 +13,7 @@ router.post('/add', async (req, res) => {
   
     res.json({
       id: newFlashcard.id,
-      message: "hello"
+      message: "You created a new flashcard"
     });
   });
 

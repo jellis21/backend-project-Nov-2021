@@ -14,12 +14,6 @@ app.engine('html', es6Renderer);
 app.set('views', 'views');
 app.set('view engine', 'html');
 
-app.get('/heartbeat', (req, res) => {
-  res.json({
-    "is": "working"
-  })
-})
-
 const {flashcards} = require('./routes');
 app.get('/', (req, res) => {
     res.render('landing', {
